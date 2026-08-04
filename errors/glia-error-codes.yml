@@ -1,0 +1,101 @@
+generated: '2026-08-04'
+method: probed
+source: >-
+  live unauthenticated probes of api.glia.com plus error handling in
+  salemove/glia-functions-tools (src/lib/errors.js)
+format: custom-json
+rfc9457: false
+docs: https://docs.glia.com/glia-dev/reference/errors
+docs_access: gated
+docs_note: >-
+  Every error the API returns carries a `ref` that deep-links to an anchor on the gated error
+  reference page (for example .../reference/errors#missing-value-error). The anchors are therefore
+  the provider's own error-type vocabulary, observable from responses even though the page itself
+  requires a Glia login. Only types actually observed in a response are listed.
+envelopes:
+- name: platform
+  fields:
+    message: human-readable summary of the failure
+    type: machine-readable error type slug
+    ref: URL of the documentation anchor for that type
+    error_details: map of request element to a list of {message, type, ref}
+  example_status: 401
+  example: >-
+    {"error_details":{"Authorization":[{"message":"Authorization is missing","ref":"https://docs.glia.com/glia-dev/reference/errors#missing-value-error","type":"missing_value_error"}]},"message":"Headers
+    are invalid","ref":"https://docs.glia.com/glia-dev/reference/errors#headers-validation-error","type":"headers_validation_error"}
+- name: validation
+  fields:
+    error: error class name or slug
+    status: literal "error"
+    details: list of {attribute, detail}, or a map of field name to messages
+  example_status: 422
+  example: '{"details":[{"attribute":"api_token","detail":"must be present"}],"error":"validation_error","status":"error"}'
+- name: legacy-auth
+  fields:
+    message: summary
+    debug_message: expected header shape
+  example_status: 401
+  example: '{"message":"Authorization information missing","debug_message":"Authorization header must have format ''token_type token''"}'
+- name: routing
+  fields:
+    error_msg: literal "404 Route Not Found"
+  example_status: 404
+  example: '{"error_msg":"404 Route Not Found"}'
+  note: Returned for unrouted paths; distinguishes a non-existent endpoint from a real one.
+problems:
+- status: 401
+  type: headers_validation_error
+  title: Headers are invalid
+  ref: https://docs.glia.com/glia-dev/reference/errors#headers-validation-error
+  observed_on: 'GET https://api.glia.com/operators'
+- status: 401
+  type: missing_value_error
+  title: Authorization is missing
+  ref: https://docs.glia.com/glia-dev/reference/errors#missing-value-error
+  observed_on: 'GET https://api.glia.com/operators (nested in error_details.Authorization)'
+- status: 401
+  type: null
+  title: Authorization information missing
+  remediation: "Send Authorization: <token_type> <token>; token_type is SessionId or AuthToken on
+    visitor/engagement resources."
+  observed_on: 'GET https://api.glia.com/sites, GET https://api.glia.com/engagements'
+- status: 422
+  type: validation_error
+  title: Validation error
+  remediation: Supply the attributes listed in details[].
+  observed_on: 'POST https://api.glia.com/operator_authentication/tokens'
+- status: 422
+  type: null
+  title: Validation error
+  remediation: Collection endpoints must be scoped - site_ids can't be blank.
+  observed_on: 'GET https://api.glia.com/queues'
+- status: 404
+  type: null
+  title: 404 Route Not Found
+  remediation: The path is not routed. Not the same as a missing resource.
+  observed_on: 'GET https://api.glia.com/openapi.json and any unrouted path'
+- status: 429
+  type: null
+  title: Rate limit exceeded
+  remediation: Honor retry-after; x-rate-limit-reset carries the reset time in unix seconds.
+  source: src/lib/errors.js (RateLimitError)
+client_error_taxonomy:
+  source: https://github.com/salemove/glia-functions-tools/blob/main/src/lib/errors.js
+  note: >-
+    Glia's own client normalizes API responses into these classes, which is the closest thing to a
+    published error taxonomy while the reference page is gated.
+  classes:
+  - {name: AuthenticationError, code: AUTH_ERROR, statuses: [401, 403]}
+  - {name: ValidationError, code: VALIDATION_ERROR, statuses: [400]}
+  - {name: NotFoundError, statuses: [404]}
+  - {name: NetworkError, statuses: ['5xx']}
+  - {name: RateLimitError, code: RATE_LIMIT_ERROR, statuses: [429]}
+  - {name: ConfigurationError, code: CONFIG_ERROR, statuses: []}
+  - {name: GliaError, code: UNKNOWN_ERROR, statuses: []}
+  context_fields: [statusCode, endpoint, method, requestId, details, responseBody]
+x-evidence:
+- {url: 'https://api.glia.com/operators', http_status: 401, fetched: '2026-08-04'}
+- {url: 'https://api.glia.com/sites', http_status: 401, fetched: '2026-08-04'}
+- {url: 'https://api.glia.com/engagements', http_status: 401, fetched: '2026-08-04'}
+- {url: 'https://api.glia.com/queues', http_status: 422, fetched: '2026-08-04'}
+- {url: 'https://api.glia.com/operator_authentication/tokens', http_status: 422, fetched: '2026-08-04'}

@@ -1,0 +1,116 @@
+generated: '2026-08-04'
+method: probed
+source: >-
+  live probes of api.glia.com plus first-party client source in salemove/glia-functions-tools
+  (src/lib/api.js, src/lib/errors.js)
+docs: https://docs.glia.com/glia-dev/reference/errors
+docs_access: gated
+scope_note: >-
+  Glia publishes no OpenAPI, and its reference documentation requires a Glia account login. Every
+  convention below is either observed directly in an HTTP response from api.glia.com or read out
+  of Glia's own published API client. Nothing here is inferred from a spec.
+authentication:
+  style: bearer
+  header: Authorization
+  format: 'Bearer <token>'
+  alternate_token_types: [SessionId, AuthToken]
+  detail: authentication/glia-authentication.yml
+versioning:
+  scheme: media-type
+  header: Accept
+  value: application/vnd.salemove.v1+json
+  current: v1
+  note: >-
+    The version is negotiated through the Accept header rather than a URI path segment. The
+    first-party client sends this Accept value on every request and comments that it is "Required
+    by the API". One subsystem is an exception: scheduled triggers are served from a URI-versioned
+    path, /api/v2/scheduled-triggers.
+  uri_versioned_exceptions:
+  - /api/v2/scheduled-triggers
+idempotency:
+  supported: true
+  header: X-Idempotency-Key
+  scope: mutating requests (POST, PUT, PATCH, DELETE)
+  default: >-
+    Enabled by default in the first-party client (idempotencyEnabled: true), which generates a key
+    per request and sets the header on every mutation unless the caller supplies one.
+  key_format: client-generated request identifier
+  retention: not documented publicly
+  source: https://github.com/salemove/glia-functions-tools/blob/main/src/lib/api.js
+pagination:
+  style: cursor
+  request_params:
+    page_size: per_page
+    cursor: cursor
+  response_fields:
+    next_cursor: next_page_cursor
+  note: >-
+    The client comments that "API expects 'per_page' not 'limit'". Iteration continues while
+    next_page_cursor is non-null; the log endpoint documents a maximum per_page of 1000.
+  max_page_size: 1000
+request_tracing:
+  response_headers: [x-request-id, request-id]
+  note: >-
+    x-request-id is returned on every response including 401s, and the client surfaces it in
+    formatted error output as "Request ID".
+rate_limits:
+  signaling: true
+  response_headers:
+  - x-rate-limit-limit
+  - x-rate-limit-remaining
+  - x-rate-limit-reset
+  - retry-after
+  status_code: 429
+  reset_unit: unix seconds
+  published_quotas: null
+  note: >-
+    Glia signals rate limits with headers and 429, and the first-party client backs off on
+    retry-after. No numeric quota is published on any public page.
+error_envelope:
+  format: custom-json
+  rfc9457: false
+  shapes:
+  - shape: platform
+    fields: [message, type, ref, error_details]
+    example_status: 401
+    note: >-
+      error_details maps a request element (e.g. Authorization) to a list of
+      {message, type, ref}; ref deep-links into the gated error reference.
+  - shape: validation
+    fields: [error, status, details]
+    example_status: 422
+    note: details is a list of {attribute, detail} or a map of field to messages.
+  detail: errors/glia-error-codes.yml
+content_types:
+  request: [application/json, application/json-patch+json]
+  response: [application/json, text/plain]
+  accept: application/vnd.salemove.v1+json
+  note: >-
+    Partial updates are sent as JSON Patch (application/json-patch+json) with /name, /description,
+    /enabled and /schedule_pattern paths. Function source code is fetched as text/plain.
+cors:
+  access_control_allow_origin: '*'
+  access_control_allow_credentials: true
+  note: Observed on api.glia.com responses; the browser SDK calls the API directly.
+regions:
+  americas: https://api.glia.com
+  eu: https://api.glia.eu
+  note: >-
+    Data residency is split US/EU and the status page tracks Americas and EU system status
+    separately. Site credentials are region-bound.
+site_scoping:
+  parameter: site_ids[]
+  header_or_query: query
+  note: >-
+    Collection endpoints are scoped to one or more sites; GET /queues without site_ids returns
+    422 {"error":"Validation error","details":{"site_ids":["can't be blank"]}}.
+resilience_expectations:
+  client_defaults:
+    timeout_ms: 30000
+    retry: exponential backoff on 429 and 5xx
+    circuit_breaker: 5 failures / 30s reset in the first-party client
+  note: These are Glia client defaults, not a published server-side SLA.
+x-evidence:
+- {url: 'https://api.glia.com/operators', http_status: 401, fetched: '2026-08-04'}
+- {url: 'https://api.glia.com/queues', http_status: 422, fetched: '2026-08-04'}
+- {url: 'https://github.com/salemove/glia-functions-tools/blob/main/src/lib/api.js', http_status: 200, fetched: '2026-08-04'}

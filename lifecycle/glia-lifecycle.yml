@@ -1,0 +1,64 @@
+generated: '2026-08-04'
+method: searched
+source: >-
+  https://status.glia.com/api/v2/summary.json, github.com/salemove releases, live probes of
+  api.glia.com
+versioning:
+  scheme: media-type
+  header: Accept
+  current: application/vnd.salemove.v1+json
+  docs: https://docs.glia.com/glia-dev
+  docs_access: gated
+  exceptions:
+  - path: /api/v2/scheduled-triggers
+    scheme: uri-path
+    current: v2
+  note: >-
+    The platform API negotiates version through the Accept header. A newer subsystem (scheduled
+    triggers) is URI-versioned at v2, so the two schemes coexist.
+deprecation:
+  policy_url: null
+  sunset_header: unknown
+  note: >-
+    No public deprecation or sunset policy was found. Deprecation is observable only at the
+    package level: the SalemoveSDK CocoaPod has been superseded by GliaCoreSDK and has had no
+    release since 2023-02, and the CLI marks its pre-command-router scripts as deprecated.
+  deprecated_artifacts:
+  - {artifact: 'cocoapods:SalemoveSDK', superseded_by: 'cocoapods:GliaCoreSDK', last_release: '2023-02-02'}
+  - {artifact: 'maven:com.glia:widgetssdk', superseded_by: 'maven:com.glia:android-widgets', last_release: '2021-08'}
+  - artifact: Site API key authentication
+    superseded_by: service credentials API key authentication
+    announced: '2026-02-17'
+    source: https://github.com/salemove/android-sdk-widgets/releases/tag/3.5.0
+    sunset_date: null
+sla:
+  url: null
+  uptime_target: null
+  note: No public SLA or uptime commitment page was found; terms are at
+    https://www.glia.com/security-compliance/terms-of-service.
+status_page:
+  url: https://status.glia.com
+  provider: Atlassian Statuspage
+  api: https://status.glia.com/api/v2/summary.json
+  components:
+  - Overall System Status Americas
+  - Overall System Status EU
+  - Real-time Analytics
+  - Communications
+  - CoBrowsing
+  - Glia Virtual Assistant (GVA)
+  - AWS ec2-us-east-1
+  - AWS ec2-eu-west-1
+  note: >-
+    Status is tracked per region (Americas / EU) and includes the underlying AWS regions
+    (us-east-1, eu-west-1), which matches the two API hosts api.glia.com and api.glia.eu.
+regions:
+- {region: Americas, api_host: https://api.glia.com, aws: us-east-1}
+- {region: EU, api_host: https://api.glia.eu, aws: eu-west-1}
+- {region: legacy, api_host: https://api.salemove.com}
+- {region: beta, api_host: https://api.beta.glia.com}
+deprecated_operations: []
+x-evidence:
+- {url: 'https://status.glia.com/api/v2/summary.json', http_status: 200, fetched: '2026-08-04'}
+- {url: 'https://api.glia.eu/operators', http_status: 401, fetched: '2026-08-04'}
+- {url: 'https://api.beta.glia.com/operators', http_status: 401, fetched: '2026-08-04'}

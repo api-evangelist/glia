@@ -1,0 +1,78 @@
+generated: '2026-08-04'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml hosts (probe-domain-security.py + manual header probe)
+hosts:
+- host: www.glia.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 26 13:46:34 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+  hsts_include_subdomains: true
+  hsts_preload: true
+- host: docs.glia.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep  6 09:18:37 2026 GMT
+  hsts: true
+  hsts_max_age: 63072000
+  hsts_include_subdomains: true
+  hsts_preload: true
+- host: api.glia.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 30 23:59:59 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+  hsts_include_subdomains: true
+  hsts_preload: false
+  note: observed on the 401 response to GET /operators; the host root itself returns 404
+- host: api.glia.eu
+  https: true
+  tls_version: TLSv1.3
+  hsts: true
+  hsts_max_age: 31536000
+  hsts_include_subdomains: true
+  hsts_preload: false
+- host: sdk-docs.glia.com
+  https: true
+  hsts: true
+  hsts_max_age: 31536000
+  hsts_include_subdomains: true
+  hsts_preload: false
+- host: status.glia.com
+  https: true
+  hsts: true
+  hsts_max_age: 259200
+  hsts_include_subdomains: false
+  hsts_preload: false
+domains:
+- domain: glia.com
+  dnssec: false
+  caa: []
+  spf: true
+  spf_record: v=spf1 include:_spf.google.com include:amazonses.com include:mktomail.com
+    include:stspg-customer.com include:spf.protection.outlook.com include:sendgrid.net ~all
+  dmarc: true
+  dmarc_policy: reject
+- domain: glia.eu
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: true
+  dmarc_policy: none
+- domain: salemove.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+x-evidence:
+  fetched: '2026-08-04'
+  tools:
+  - dig
+  - curl -D
+  notes: >-
+    No CAA records are published on any Glia registrable domain and none are DNSSEC signed.
+    glia.eu carries a DMARC record at p=none (monitor only) and publishes no SPF record,
+    while glia.com and salemove.com are both at p=reject with SPF.

@@ -1,0 +1,186 @@
+generated: '2026-08-04'
+method: derived
+source: >-
+  mcp/glia-mcp.yml (tool registrations in salemove/glia-functions-tools mcp-server/server.js)
+  bound to the REST calls the same repository's src/lib/api.js issues against https://api.glia.com
+surfaces:
+  openapi:
+    present: false
+    note: >-
+      Glia publishes no public OpenAPI. The developer reference at docs.glia.com is served by a
+      Fern site behind a Glia account login (302 to app.glia.com/login), and /openapi.json on that
+      host returns 401. api.glia.com returns 404 for /openapi.json, /openapi.yaml, /swagger.json,
+      /api-docs, /docs and /redoc. Because there is no spec, the rest[] column below binds tools
+      to observed METHOD + PATH rather than to operationIds.
+  graphql:
+    present: false
+    note: POST https://api.glia.com/graphql returns 404 Route Not Found.
+  mcp:
+    url: null
+    transport: stdio
+    gated: true
+    note: >-
+      stdio-only, launched locally as `glia-functions mcp`; there is no remote endpoint to call
+      tools/list against anonymously, so tool inputs were read from source.
+  rest:
+    base_url: https://api.glia.com
+    regional: [https://api.glia.eu]
+    accept: application/vnd.salemove.v1+json
+crosswalk:
+- tool: gf_list_functions
+  category: functions
+  rest: ['GET /functions?site_ids[]={siteId}']
+  binding: rest
+  confidence: high
+- tool: gf_get_function
+  category: functions
+  rest: ['GET /functions/{functionId}']
+  binding: rest
+  confidence: high
+- tool: gf_create_function
+  category: functions
+  rest: ['POST /functions']
+  binding: rest
+  confidence: high
+- tool: gf_update_function
+  category: functions
+  rest: ['PATCH /functions/{functionId}']
+  binding: rest
+  confidence: high
+  note: The client sends application/json-patch+json for field updates.
+- tool: gf_delete_function
+  category: functions
+  rest: ['DELETE /functions/{functionId}']
+  binding: rest
+  confidence: high
+- tool: gf_list_function_versions
+  category: versions
+  rest: ['GET /functions/{functionId}/versions']
+  binding: rest
+  confidence: high
+- tool: gf_create_version
+  category: versions
+  rest: ['POST /functions/{functionId}/versions']
+  binding: rest
+  confidence: high
+- tool: gf_get_version_task
+  category: versions
+  rest: ['GET /functions/{functionId}/tasks/{taskId}']
+  binding: rest
+  confidence: high
+  note: Version creation is asynchronous; the task resource carries its status.
+- tool: gf_deploy_version
+  category: versions
+  rest: ['POST /functions/{functionId}/deployments']
+  binding: rest
+  confidence: high
+- tool: gf_invoke_function
+  category: execution
+  rest: ['POST {invocation_uri}']
+  binding: rest
+  confidence: medium
+  note: >-
+    Invocation targets the per-function invocation_uri returned by GET /functions/{functionId},
+    not a fixed path. The tool resolves it from functionId when invocationUri is omitted.
+- tool: gf_fetch_logs
+  category: execution
+  rest: ['GET /functions/{functionId}/logs']
+  binding: rest
+  confidence: high
+  note: Cursor paginated with per_page + cursor; response carries next_page_cursor.
+- tool: gf_kv_list
+  category: kv-store
+  rest: ['GET /functions/kv']
+  binding: rest
+  confidence: high
+- tool: gf_kv_get
+  category: kv-store
+  rest: ['POST /functions/kv/batch']
+  binding: rest
+  confidence: high
+  note: Single-key read expressed as a one-item batch with op=get.
+- tool: gf_kv_set
+  category: kv-store
+  rest: ['POST /functions/kv/batch']
+  binding: rest
+  confidence: high
+  note: Single-key write expressed as a one-item batch.
+- tool: gf_kv_delete
+  category: kv-store
+  rest: ['POST /functions/kv/batch']
+  binding: rest
+  confidence: high
+  note: Single-key delete expressed as a one-item batch.
+- tool: gf_kv_test_and_set
+  category: kv-store
+  rest: ['POST /functions/kv/batch']
+  binding: rest
+  confidence: high
+  note: Compare-and-swap expressed as a one-item batch with op=testAndSet.
+- tool: gf_list_scheduled_triggers
+  category: scheduled-triggers
+  rest: ['GET /api/v2/scheduled-triggers']
+  binding: rest
+  confidence: high
+- tool: gf_create_scheduled_trigger
+  category: scheduled-triggers
+  rest: ['POST /api/v2/scheduled-triggers']
+  binding: rest
+  confidence: high
+- tool: gf_update_scheduled_trigger
+  category: scheduled-triggers
+  rest: ['PATCH /api/v2/scheduled-triggers/{triggerId}']
+  binding: rest
+  confidence: high
+- tool: gf_delete_scheduled_trigger
+  category: scheduled-triggers
+  rest: ['DELETE /api/v2/scheduled-triggers/{triggerId}']
+  binding: rest
+  confidence: high
+mcp_only:
+- tool: gf_validate_cron
+  reason: Local cron-expression validation and next-execution preview; no API call.
+- tool: gf_validate_code
+  reason: Local JavaScript validation before deployment; no API call.
+- tool: gf_cron_presets
+  reason: Returns a static preset table shipped with the CLI; no API call.
+rest_only:
+- capability: applets
+  endpoints:
+  - 'GET /sites/{siteId}/axons'
+  - 'GET /axons/{appletId}'
+  - 'POST /axons'
+  - 'PATCH /axons/{appletId}'
+  - 'DELETE /axons/{appletId}'
+  - 'POST /sites/{siteId}/axons'
+  note: The CLI exposes applet commands but no MCP tool binds to them.
+- capability: function version detail
+  endpoints:
+  - 'GET /functions/{functionId}/versions/{versionId}'
+  - 'GET /functions/{functionId}/versions/{versionId}/code'
+  - 'PATCH /functions/{functionId}/versions/{versionId}'
+  note: >-
+    Environment-variable management is expressed through these version endpoints in the CLI; the
+    README counts two MCP env-var tools but none are registered in the committed server file.
+- capability: authentication
+  endpoints:
+  - 'POST /operator_authentication/tokens'
+  - 'GET /operator_authentication/sessions/current'
+- capability: core platform
+  endpoints:
+  - 'GET /operators'
+  - 'GET /sites'
+  - 'GET /engagements'
+  - 'GET /queues'
+  note: >-
+    Observed live (401/422 responses distinguishing them from the API's 404 Route Not Found).
+    None of the Glia platform's customer-service surface is exposed through MCP.
+coverage:
+  tools_named: 23
+  tools_bound_to_rest: 20
+  mcp_only: 3
+  rest_operations_identified: 26
+  rest_operations_with_a_tool: 16
+  note: >-
+    rest_operations_identified counts only endpoints observed in first-party source or live
+    probes; the full Glia REST surface is larger but undocumented publicly.

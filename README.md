@@ -42,5 +42,26 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Glia is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/glia_stock/
+Glia (formerly SaleMove) is a digital customer service and applied-AI platform built for banks,
+credit unions and insurers, unifying chat, voice, video, messaging and CoBrowsing under what the
+company calls ChannelLess architecture.
+
+The developer surface is a REST API at `api.glia.com` with regional US/EU hosts, a public Visitor
+JS SDK for embedding engagements in web properties, native iOS/Android/Ionic widget SDKs published
+to CocoaPods and Maven Central, and Glia Functions — a workerd-based serverless JavaScript runtime
+with a first-party CLI and MCP server.
+
+**Note on the contract.** Glia publishes no public OpenAPI. Its developer reference is served from
+a Fern-hosted portal that redirects to a Glia account login, and `/openapi.json` on that host
+returns `401`. The artifacts in this repository are therefore assembled from what *is* public:
+observed HTTP responses from `api.glia.com`, Glia's own open-source API client and CLI, the public
+Visitor JS SDK reference, published package registries, and the company's security, status and
+compliance pages.
+
+- Website — https://www.glia.com
+- Developer portal (login required) — https://docs.glia.com/glia-dev
+- Visitor JS SDK reference — https://sdk-docs.glia.com/visitor-js-api/current/
+- GitHub — https://github.com/salemove
+- Status — https://status.glia.com
+- Security & compliance — https://www.glia.com/security
+- Bug bounty — https://www.glia.com/security-bounty

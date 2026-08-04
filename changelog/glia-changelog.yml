@@ -1,0 +1,88 @@
+generated: '2026-08-04'
+method: searched
+source: https://github.com/salemove (GitHub Releases on the first-party SDK repositories)
+scope_note: >-
+  Glia publishes no changelog for the REST API itself - there is no /changelog or release-notes
+  page on glia.com, and the developer portal is behind a Glia account login. What it does publish
+  publicly, on a regular cadence, is dated release notes on its SDK repositories. Those are
+  captured here as the provider's public change record.
+channels:
+- name: iOS Widgets SDK
+  url: https://github.com/salemove/ios-sdk-widgets/releases
+  scheme: semver
+  current_version: 3.5.7
+  current_date: '2026-07-07'
+- name: Android Widgets SDK
+  url: https://github.com/salemove/android-sdk-widgets/releases
+  scheme: semver
+  current_version: 3.5.3
+  current_date: '2026-07-03'
+- name: Company product announcements
+  url: https://www.glia.com/news
+  scheme: dated posts
+  note: Press-release cadence, not versioned release notes.
+entries:
+- channel: ios-widgets
+  version: 3.5.7
+  date: '2026-07-07'
+  breaking: false
+  highlights:
+  - Upgraded the internal WebRTC dependency to the Chrome M149 branch.
+- channel: ios-widgets
+  version: 3.5.6
+  date: '2026-06-10'
+  breaking: false
+  highlights:
+  - Fixed a Call Visualizer crash when the operator ended a video engagement with the visitor UI
+    minimized.
+- channel: ios-widgets
+  version: 3.5.5
+  date: '2026-06-01'
+  breaking: false
+  highlights:
+  - Fixed a Live Observation session persisting after the visitor ended the engagement.
+- channel: ios-widgets
+  version: 3.5.4
+  date: '2026-05-08'
+  breaking: false
+  highlights:
+  - Fixed visitors not receiving operator messages after an engagement transfer.
+- channel: android-widgets
+  version: 3.5.3
+  date: '2026-07-03'
+  breaking: false
+  highlights:
+  - Migrated widgets chat send to the new unified Core API.
+  - Incremented Core SDK to 4.0.0.
+- channel: android-widgets
+  version: 3.5.2
+  date: '2026-05-08'
+  breaking: false
+  highlights:
+  - Screen-reader accessibility improvements across the SDK.
+- channel: android-widgets
+  version: 3.5.1
+  date: '2026-03-18'
+  breaking: false
+  highlights:
+  - Accessibility support for the chat attachment selector and survey item titles.
+- channel: android-widgets
+  version: 3.5.0
+  date: '2026-02-17'
+  breaking: false
+  deprecation: true
+  highlights:
+  - Added service credentials, aligning service-to-service API keys with Glia's access management
+    framework.
+  - Site API key deprecated in favor of service credentials API key authentication.
+  - Telemetry now records API key type.
+- channel: android-widgets
+  version: 3.4.0
+  date: '2026-01-14'
+  breaking: false
+  highlights:
+  - Real-time connection quality signal added.
+  - Release carries a known crash requiring a proguard keep rule for org.jni_zero.
+x-evidence:
+- {url: 'https://api.github.com/repos/salemove/ios-sdk-widgets/releases', http_status: 200, fetched: '2026-08-04'}
+- {url: 'https://api.github.com/repos/salemove/android-sdk-widgets/releases', http_status: 200, fetched: '2026-08-04'}

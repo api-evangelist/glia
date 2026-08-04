@@ -1,0 +1,48 @@
+generated: '2026-08-04'
+method: searched
+probe: true
+url: https://www.glia.com/security
+type: security-and-compliance-page
+dedicated_trust_center: false
+note: >-
+  Glia does not run a dedicated trust portal - trust.glia.com does not resolve. Its security and
+  compliance posture is published as a page on the marketing site, which names the attestations
+  it holds directly and the ones it inherits from AWS.
+certifications:
+- {name: SOC 2 Type 2, held_by: Glia}
+- {name: PCI DSS, held_by: Glia}
+- {name: HIPAA/HITECH Type 1, held_by: Glia}
+- {name: CCPA, held_by: Glia, kind: regulation}
+inherited_from_infrastructure:
+  provider: Amazon Web Services
+  attestations:
+  - ISO/IEC 27001
+  - SSAE-16 SOC 1
+  - SSAE-16 SOC 2
+  - SSAE-16 SOC 3
+  - FedRAMP
+  - FISMA
+  note: >-
+    These are AWS attestations Glia cites as inherited through its hosting, not certifications
+    issued to Glia. Recorded separately so the distinction is not lost.
+controls_published:
+- All data encrypted in transit and at rest
+- End-to-end encryption
+- Masking of PII
+- 24/7 intrusion detection
+- Daily manual log review
+- OWASP-based security testing
+- Platform hosted exclusively on AWS
+related:
+  vulnerability_disclosure: security/glia-vulnerability-disclosure.yml
+  terms_of_service: https://www.glia.com/security-compliance/terms-of-service
+  privacy_policy: https://www.glia.com/security-compliance/privacy-policy
+evidence:
+- source: https://www.glia.com/security
+  http_status: 200
+  fetched: '2026-08-04'
+  keywords: [soc 2 type 2, pci dss, hipaa, hitech, ccpa, encryption, intrusion detection]
+- source: https://trust.glia.com/
+  http_status: 0
+  fetched: '2026-08-04'
+  note: Does not resolve.

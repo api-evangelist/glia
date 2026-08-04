@@ -1,0 +1,68 @@
+generated: '2026-08-04'
+method: searched
+source: >-
+  https://sdk-docs.glia.com/visitor-js-api/current/, https://www.glia.com/extensibility,
+  github.com/salemove
+note: >-
+  Glia's product is embedded into a customer's own web and mobile properties, so the client-side
+  component surface is larger than the server-side one. These are the embeddable/UI layers,
+  distinct from the server SDKs and packages catalogued in packages/glia-packages.yml.
+families:
+- family: Visitor JS SDK
+  kind: browser-sdk
+  loader: Glia-hosted script; the global object is `Salemove`
+  reference: https://sdk-docs.glia.com/visitor-js-api/current/
+  reference_public: true
+  documented_classes: 59
+  capabilities:
+  - queueForEngagement / requestEngagement
+  - chat and message center
+  - audio and video media upgrades (Omnicall)
+  - screen sharing and CoBrowsing (Cobrowser, Omnibrowse)
+  - visitor authentication (createAuthenticationRequest)
+  - visitor identity and context (getVisitorId, getSiteId, getSessionContext, getBrowserContext)
+  - queue state and wait-duration subscriptions
+  - surveys
+  - locale selection and contact-operator button setup
+  - element attribute masking for CoBrowsing (changeElementAttributesForCobrowsing)
+- family: iOS Widgets
+  kind: mobile-ui-components
+  package: 'cocoapods:GliaWidgets'
+  source: https://github.com/salemove/ios-sdk-widgets
+  note: Prebuilt engagement UI on top of GliaCoreSDK.
+- family: Android Widgets
+  kind: mobile-ui-components
+  package: 'maven:com.glia:android-widgets'
+  source: https://github.com/salemove/android-sdk-widgets
+- family: Ionic Widgets
+  kind: hybrid-ui-components
+  source: https://github.com/salemove/widgets_sdk_ionic
+- family: React Native Widgets
+  kind: hybrid-ui-components
+  source: https://github.com/salemove/glia-widgets-reactnative
+- family: Applets
+  kind: embedded-surface
+  api_paths:
+  - 'GET /sites/{siteId}/axons'
+  - 'POST /sites/{siteId}/axons'
+  - 'GET|PATCH|DELETE /axons/{appletId}'
+  note: >-
+    Applets are host-page surfaces embedded into the Glia operator experience; the REST resource
+    is named "axons". Managed through the Glia Functions CLI.
+- family: Call Visualizer
+  kind: embedded-surface
+  note: >-
+    Named repeatedly in the iOS/Android Widgets release notes as a distinct embedded engagement
+    surface for voice-initiated interactions.
+extensibility:
+  page: https://www.glia.com/extensibility
+  capabilities:
+  - REST APIs
+  - SDKs
+  - Data export tools
+  - Event-based exports to CRM and data lakes
+  - Glia Functions (serverless JavaScript)
+x-evidence:
+- {url: 'https://sdk-docs.glia.com/visitor-js-api/current/', http_status: 200, fetched: '2026-08-04'}
+- {url: 'https://sdk-docs.glia.com/visitor-js-api/current/Salemove.html', http_status: 200, fetched: '2026-08-04'}
+- {url: 'https://www.glia.com/extensibility', http_status: 200, fetched: '2026-08-04'}

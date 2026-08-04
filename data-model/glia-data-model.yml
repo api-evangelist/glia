@@ -1,0 +1,178 @@
+generated: '2026-08-04'
+method: derived
+source: >-
+  https://sdk-docs.glia.com/visitor-js-api/current/ (the public Visitor JS SDK API reference) plus
+  REST paths observed in salemove/glia-functions-tools and live probes of api.glia.com
+note: >-
+  Glia publishes no OpenAPI, so this graph is not derived from a spec. It is derived from the one
+  machine-legible public contract Glia does publish - the 59-class Visitor JS SDK reference - and
+  from the resource paths visible in Glia's own API client. Only members and relationships
+  actually documented on those pages are recorded; nothing is inferred about server-side schemas
+  that are not publicly described.
+domains:
+- name: engagement
+  description: A live interaction between a visitor and an operator across chat, audio, video,
+    screen sharing or CoBrowsing.
+- name: routing
+  description: Queues, queue state and tickets that place a visitor with an operator.
+- name: visitor
+  description: Visitor identity, session and browser context.
+- name: feedback
+  description: Post-engagement surveys.
+- name: platform-management
+  description: Sites, operators, functions, applets and scheduled triggers over REST.
+entities:
+- name: Engagement
+  domain: engagement
+  id_field: engagementId
+  fields: [engagementId, interactionId, createdAt, mediaState, chat, cobrowser, allowFileSending,
+    allowedFileContentTypes, isReestablishing]
+  operations: [end, getChatTranscript, getSurvey, addEventListener]
+  source: sdk-docs Engagement
+- name: Chat
+  domain: engagement
+  fields: [EVENTS, SENDERS]
+  operations: [sendMessage, sendMessagePreview, addEventListener, removeEventListener]
+  source: sdk-docs Chat
+- name: EngagementRequest
+  domain: engagement
+  fields: [engagementPromise, operatorPromise, timeout]
+  operations: [cancel]
+  source: sdk-docs EngagementRequest
+- name: MediaState
+  domain: engagement
+  source: sdk-docs MediaState
+- name: MediaUpgradeOffer
+  domain: engagement
+  source: sdk-docs MediaUpgradeOffer
+- name: Cobrowser
+  domain: engagement
+  source: sdk-docs Cobrowser
+- name: CobrowsingSession
+  domain: engagement
+  source: sdk-docs CobrowsingSession
+- name: ScreenSharing
+  domain: engagement
+  source: sdk-docs ScreenSharing
+- name: EngagementFile
+  domain: engagement
+  source: sdk-docs EngagementFile
+- name: Operator
+  domain: engagement
+  id_field: id
+  fields: [id, name, formattedName, picture, state]
+  source: sdk-docs Operator
+- name: OperatorMessage
+  domain: engagement
+  source: sdk-docs OperatorMessage
+- name: VisitorMessage
+  domain: engagement
+  source: sdk-docs VisitorMessage
+- name: Queue
+  domain: routing
+  id_field: id
+  fields: [id, name, state]
+  source: sdk-docs Queue
+- name: QueueState
+  domain: routing
+  source: sdk-docs QueueState
+- name: AggregateQueueState
+  domain: routing
+  source: sdk-docs AggregateQueueState
+- name: QueueTicket
+  domain: routing
+  fields: [engagementPromise]
+  operations: [cancel]
+  source: sdk-docs QueueTicket
+- name: QueueWaitDuration
+  domain: routing
+  source: sdk-docs QueueWaitDuration
+- name: VisitorStatus
+  domain: visitor
+  source: sdk-docs VisitorStatus
+- name: VisitorCode
+  domain: visitor
+  source: sdk-docs VisitorCode
+- name: AuthenticationRequest
+  domain: visitor
+  source: sdk-docs AuthenticationRequest
+- name: Survey
+  domain: feedback
+  id_field: id
+  fields: [id, name, title, description, type, questions, QUESTION_TYPES]
+  operations: [answer]
+  source: sdk-docs Survey
+- name: SurveyQuestion
+  domain: feedback
+  source: sdk-docs SurveyQuestion
+- name: SurveyChoice
+  domain: feedback
+  source: sdk-docs SurveyChoice
+- name: MessageCenter
+  domain: engagement
+  source: sdk-docs MessageCenter
+- name: Site
+  domain: platform-management
+  id_field: site_id
+  rest: ['GET /sites', 'GET /sites/{siteId}/axons']
+  note: >-
+    The universal scoping unit. Collection endpoints require site_ids[]; API credentials are
+    issued per site.
+- name: Function
+  domain: platform-management
+  id_field: functionId
+  rest: ['GET|POST /functions', 'GET|PATCH|DELETE /functions/{functionId}']
+- name: FunctionVersion
+  domain: platform-management
+  id_field: versionId
+  rest: ['GET|POST /functions/{functionId}/versions', 'GET|PATCH /functions/{functionId}/versions/{versionId}']
+- name: Deployment
+  domain: platform-management
+  rest: ['POST /functions/{functionId}/deployments']
+- name: VersionTask
+  domain: platform-management
+  id_field: taskId
+  rest: ['GET /functions/{functionId}/tasks/{taskId}']
+- name: KvPair
+  domain: platform-management
+  rest: ['GET /functions/kv', 'POST /functions/kv/batch']
+- name: ScheduledTrigger
+  domain: platform-management
+  id_field: triggerId
+  rest: ['GET|POST /api/v2/scheduled-triggers', 'GET|PATCH|DELETE /api/v2/scheduled-triggers/{triggerId}']
+- name: Applet
+  domain: platform-management
+  id_field: appletId
+  rest_resource: axons
+  rest: ['GET /sites/{siteId}/axons', 'GET|PATCH|DELETE /axons/{appletId}']
+relationships:
+- {from: Engagement, to: Chat, kind: has_one, via: chat}
+- {from: Engagement, to: Cobrowser, kind: has_one, via: cobrowser}
+- {from: Engagement, to: MediaState, kind: has_one, via: mediaState}
+- {from: Engagement, to: Survey, kind: has_one, via: getSurvey}
+- {from: Engagement, to: Operator, kind: has_many, via: engagement participants}
+- {from: EngagementRequest, to: Engagement, kind: has_one, via: engagementPromise}
+- {from: EngagementRequest, to: Operator, kind: has_one, via: operatorPromise}
+- {from: QueueTicket, to: Engagement, kind: has_one, via: engagementPromise}
+- {from: Queue, to: QueueState, kind: has_one, via: state}
+- {from: AggregateQueueState, to: Queue, kind: has_many, via: queue aggregation}
+- {from: Chat, to: OperatorMessage, kind: has_many, via: EVENTS}
+- {from: Chat, to: VisitorMessage, kind: has_many, via: EVENTS}
+- {from: Survey, to: SurveyQuestion, kind: has_many, via: questions}
+- {from: SurveyQuestion, to: SurveyChoice, kind: has_many, via: choices}
+- {from: Cobrowser, to: CobrowsingSession, kind: has_many, via: session}
+- {from: Site, to: Queue, kind: has_many, via: site_ids}
+- {from: Site, to: Applet, kind: has_many, via: '/sites/{siteId}/axons'}
+- {from: Site, to: Function, kind: has_many, via: 'site_ids[]'}
+- {from: Function, to: FunctionVersion, kind: has_many, via: '/functions/{functionId}/versions'}
+- {from: Function, to: Deployment, kind: has_many, via: '/functions/{functionId}/deployments'}
+- {from: FunctionVersion, to: VersionTask, kind: has_one, via: async creation task}
+- {from: Function, to: ScheduledTrigger, kind: has_many, via: functionId}
+counts:
+  sdk_classes_documented: 59
+  entities_recorded: 34
+  relationships_recorded: 22
+x-evidence:
+- {url: 'https://sdk-docs.glia.com/visitor-js-api/current/', http_status: 200, fetched: '2026-08-04'}
+- {url: 'https://sdk-docs.glia.com/visitor-js-api/current/Engagement.html', http_status: 200, fetched: '2026-08-04'}
+- {url: 'https://api.glia.com/queues', http_status: 422, fetched: '2026-08-04'}

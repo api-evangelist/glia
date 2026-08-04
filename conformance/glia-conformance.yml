@@ -1,0 +1,88 @@
+generated: '2026-08-04'
+method: searched
+source: >-
+  https://www.glia.com/security, live probes of api.glia.com, first-party client source in
+  salemove/glia-functions-tools
+note: >-
+  Glia publishes no OpenAPI, so nothing below is derived from a spec. Each entry is backed either
+  by a published compliance claim on glia.com or by an observed HTTP behaviour.
+standards:
+- id: soc2-type2
+  conforms: true
+  evidence: named on https://www.glia.com/security
+- id: pci-dss
+  conforms: true
+  evidence: named on https://www.glia.com/security
+- id: hipaa
+  conforms: true
+  evidence: HIPAA/HITECH Type 1 named on https://www.glia.com/security
+- id: ccpa
+  conforms: true
+  evidence: named on https://www.glia.com/security
+- id: iso-27001
+  conforms: false
+  evidence: cited only as an AWS attestation Glia inherits, not held by Glia
+- id: fedramp
+  conforms: false
+  evidence: cited only via AWS reports; Glia holds no FedRAMP authorization
+- id: gdpr
+  conforms: unknown
+  evidence: >-
+    Glia operates an EU region (api.glia.eu, AWS eu-west-1) and a separate EU status component,
+    but no explicit GDPR statement was found on the public security page.
+- id: oauth2
+  conforms: false
+  evidence: 'no oauth2 endpoints; GET /oauth/token returns 404 and no RFC 8414 metadata is served'
+- id: oidc
+  conforms: false
+  evidence: no /.well-known/openid-configuration on any host
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on every host; the policy is a web page only
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    errors use custom JSON envelopes (message/type/ref/error_details and error/status/details),
+    not application/problem+json
+- id: rfc8594-sunset-header
+  conforms: unknown
+  evidence: no public deprecation policy; no Sunset header observed on probed responses
+- id: rfc6750-bearer-token
+  conforms: partial
+  evidence: >-
+    Authorization Bearer is used for platform tokens, but the API also defines non-standard
+    token types (SessionId, AuthToken) in the same header
+- id: rfc7386-json-patch
+  conforms: true
+  evidence: >-
+    partial updates are sent as application/json-patch+json with /name, /description, /enabled and
+    /schedule_pattern paths
+- id: idempotency-key
+  conforms: true
+  evidence: X-Idempotency-Key sent on all mutating requests by the first-party client
+  note: >-
+    Header name is X-Idempotency-Key rather than the IETF draft's Idempotency-Key.
+- id: cursor-pagination
+  conforms: true
+  evidence: per_page + cursor request params, next_page_cursor response field
+- id: rate-limit-headers
+  conforms: partial
+  evidence: >-
+    x-rate-limit-limit / x-rate-limit-remaining / x-rate-limit-reset plus Retry-After; these are
+    the pre-RFC 9331 vendor spellings, not the RateLimit / RateLimit-Policy fields
+- id: mcp
+  conforms: true
+  evidence: >-
+    first-party stdio MCP server built on @modelcontextprotocol/sdk in
+    salemove/glia-functions-tools
+- id: a2a
+  conforms: false
+  evidence: no agent card at /.well-known/agent-card.json or /.well-known/agent.json on any host
+- id: llms-txt
+  conforms: true
+  evidence: 'https://www.glia.com/llms.txt returns 200 with a well-formed llms.txt document'
+- id: openapi
+  conforms: false
+  evidence: >-
+    no public OpenAPI; docs.glia.com/openapi.json returns 401 and api.glia.com returns 404 for
+    every spec path probed

@@ -1,0 +1,40 @@
+generated: '2026-08-04'
+method: probed
+source: live GET probes on every Glia host in apis.yml
+result: none
+summary: >-
+  Glia publishes no /.well-known/ discovery documents on any host probed. www.glia.com and
+  glia.com answer every /.well-known/* path with a 404 and a fixed "Invalid .well-known request"
+  HTML body; api.glia.com answers with its standard JSON 404 Route Not Found. No security.txt,
+  no OIDC or OAuth authorization-server metadata, no api-catalog, no ai-plugin.json and no agent
+  card. No apis.yml pointer is emitted for this artifact because nothing was found.
+hosts:
+- host: https://www.glia.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://glia.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+- host: https://api.glia.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/jwks.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://docs.glia.com
+  documents:
+  - {path: /.well-known/agent-card.json, status: 404}
+x-evidence:
+  fetched: '2026-08-04'
+  method: curl -L
+  note: >-
+    A security policy IS published, but as an ordinary web page at
+    https://www.glia.com/security-bounty rather than as an RFC 9116 security.txt. See
+    security/glia-vulnerability-disclosure.yml.

@@ -1,0 +1,101 @@
+generated: '2026-08-04'
+method: searched
+source: https://github.com/salemove/glia-functions-tools
+cli:
+  name: Glia Functions CLI
+  binaries:
+  - glia-functions
+  - glia
+  language: javascript
+  runtime: Node.js 16+
+  license: MIT
+  repository: https://github.com/salemove/glia-functions-tools
+  npm: https://www.npmjs.com/package/glia-functions-tools
+  scope: >-
+    Covers Glia Functions only (the workerd-based serverless JavaScript runtime inside the Glia
+    platform). It is not a general-purpose CLI over the whole Glia REST API.
+install:
+- method: source
+  commands:
+  - git clone https://github.com/salemove/glia-functions-tools.git
+  - cd glia-functions-tools && npm install
+  - npm run install-global
+  note: The README documents installing from source as the primary path.
+- method: npm
+  commands:
+  - npm install -g glia-functions-tools
+  note: Registry entry is published by an individual account; first-party ownership unverified.
+configuration:
+  env:
+  - name: GLIA_KEY_ID
+    description: Glia API key ID
+    required: true
+  - name: GLIA_KEY_SECRET
+    description: Glia API key secret
+    required: true
+  - name: GLIA_SITE_ID
+    description: Glia site ID
+    required: true
+  - name: GLIA_API_URL
+    description: API base URL
+    required: false
+    default: https://api.glia.com
+  - name: GLIA_BEARER_TOKEN
+    description: Bearer token minted from the key pair; set automatically by the CLI
+    required: false
+  - name: DEBUG_MODE
+    description: Enable debug logging
+    required: false
+    default: 'false'
+  profiles: >-
+    Named profiles with per-profile site switching; a single command can override with --profile.
+modes:
+- interactive
+- command
+commands:
+- group: functions
+  commands:
+  - list-functions [--detailed]
+  - create-function --name --description [--template]
+  - update-function --id [--name] [--description]
+  - delete-function
+  - list-templates
+- group: versions
+  commands:
+  - create-version --function-id --path [--deploy]
+  - deploy --function-id --version-id
+  - update-version --function-id --version-id --env-vars
+- group: environment
+  commands:
+  - update-env-vars --id --list
+  - update-env-vars --id --env '{...}' [--no-deploy] [--interactive]
+- group: execution
+  commands:
+  - invoke-function --function-id --payload
+  - fetch-logs --function-id [--all] [--start-time] [--end-time] [--limit] [--output]
+- group: local development
+  commands:
+  - dev --path [--port] [--watch] [--env]
+- group: projects
+  commands:
+  - init --list-templates
+  - init --template <name> --output <dir> [--variables]
+- group: profiles and sites
+  commands:
+  - profiles list
+  - profiles create --name
+  - profiles switch --name
+  - change-site
+- group: agent
+  commands:
+  - mcp
+  note: Starts the stdio MCP server; see mcp/glia-mcp.yml.
+key_flows:
+- Build a function bundle with esbuild, create a version from it, and deploy in one step.
+- Manage function environment variables as new deployed versions rather than in-place edits.
+- Schedule recurring invocations with cron expressions.
+- Run a function locally against a dev server before deploying.
+x-evidence:
+  fetched: '2026-08-04'
+  url: https://api.github.com/repos/salemove/glia-functions-tools/contents/README.md
+  http_status: 200

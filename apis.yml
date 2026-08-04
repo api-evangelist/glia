@@ -1,18 +1,94 @@
 aid: glia
 name: Glia
-description: 'Glia is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Glia (formerly SaleMove) is a digital customer service and applied-AI platform
+  built for banks, credit unions and insurers, unifying chat, voice, video, messaging and
+  CoBrowsing under what the company calls ChannelLess architecture. Its AI layer is packaged as
+  Glia Banker (customer-facing AI agent), Glia CoPilot (real-time agent assist) and Glia Analyst
+  (manager/QA AI), alongside Glia Voice. The developer surface is a REST API at api.glia.com with
+  regional US/EU hosts, a public Visitor JS SDK for embedding engagements in web properties,
+  native iOS/Android/Ionic widget SDKs published to CocoaPods and Maven Central, and Glia
+  Functions - a workerd-based serverless JavaScript runtime with a first-party CLI and MCP server.
+  Developer documentation is served from a Fern-hosted portal that requires a Glia account login,
+  so no public OpenAPI is published.'
 url: https://raw.githubusercontent.com/api-evangelist/glia/refs/heads/main/apis.yml
+image: https://cdn.prod.website-files.com/680f1550811d9719bdbcf21b/680f7b6051475b02b05d75c6_logo.svg
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
 specificationVersion: '0.20'
 created: '2026-08-04'
 modified: '2026-08-04'
 tags:
 - Company
-apis: []
+- Customer Service
+- Contact Center
+- Banking
+- Credit Unions
+- Financial Services
+- Conversational AI
+- Voice
+- CoBrowsing
+- Serverless
+apis:
+- aid: glia:glia-rest-api
+  name: Glia REST API
+  description: 'The Glia platform REST API. Serves operators, sites, engagements, queues and
+    reporting resources over api.glia.com (US) and api.glia.eu (EU). Authentication is a bearer
+    token minted from an API key id/secret pair at /operator_authentication/tokens; requests
+    negotiate a version through the Accept header (application/vnd.salemove.v1+json). Reference
+    documentation is behind a Glia account login, so no OpenAPI is published publicly.'
+  humanURL: https://docs.glia.com/glia-dev
+  baseURL: https://api.glia.com
+  tags:
+  - Customer Service
+  - Engagements
+  - Contact Center
+  properties:
+  - type: Authentication
+    url: authentication/glia-authentication.yml
+  - type: ErrorCatalog
+    url: errors/glia-error-codes.yml
+  - type: Conventions
+    url: conventions/glia-conventions.yml
+- aid: glia:glia-functions-api
+  name: Glia Functions API
+  description: 'Glia Functions is a serverless JavaScript runtime (workerd) inside the Glia
+    platform, with REST endpoints for functions, versions, deployments, logs, applets, a KV store
+    and cron-style scheduled triggers. Glia publishes a first-party CLI and a stdio MCP server
+    exposing 23 tools over these operations.'
+  humanURL: https://github.com/salemove/glia-functions-tools
+  baseURL: https://api.glia.com
+  tags:
+  - Serverless
+  - Functions
+  - Developer Tools
+  properties:
+  - type: MCPServer
+    url: mcp/glia-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/glia-tool-crosswalk.yml
+  - type: CLI
+    url: cli/glia-cli.yml
+  - type: SourceCode
+    url: https://github.com/salemove/glia-functions-tools
+- aid: glia:glia-visitor-js-sdk
+  name: Glia Visitor JS SDK
+  description: 'The public browser SDK for embedding Glia engagements into a web property -
+    queueing for engagement, chat, media upgrades, screen sharing, CoBrowsing, visitor
+    authentication, surveys and message center. Its API reference is published openly at
+    sdk-docs.glia.com with 59 documented classes.'
+  humanURL: https://sdk-docs.glia.com/visitor-js-api/current/
+  baseURL: https://api.glia.com
+  tags:
+  - JavaScript
+  - SDK
+  - CoBrowsing
+  properties:
+  - type: APIReference
+    url: https://sdk-docs.glia.com/visitor-js-api/current/
+  - type: DataModel
+    url: data-model/glia-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +96,73 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://forgeglobal.com/glia_stock/
+  url: https://www.glia.com
+- type: DeveloperPortal
+  url: https://docs.glia.com/glia-dev
+- type: Documentation
+  url: https://docs.glia.com/
+- type: APIReference
+  url: https://sdk-docs.glia.com/visitor-js-api/current/
+- type: GitHubOrganization
+  url: https://github.com/salemove
+- type: Blog
+  url: https://www.glia.com/blog
+- type: Support
+  url: https://www.glia.com/services-support
+- type: HelpCenter
+  url: https://community.glia.com/
+- type: Pricing
+  url: https://www.glia.com/pricing
+- type: Login
+  url: https://app.glia.com/
+- type: TermsOfService
+  url: https://www.glia.com/security-compliance/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.glia.com/security-compliance/privacy-policy
+- type: StatusPage
+  url: https://status.glia.com
+- type: Security
+  url: https://www.glia.com/security-bounty
+- type: Compliance
+  url: https://www.glia.com/security
+- type: LLMsTxt
+  url: llms/glia-llms.txt
+- type: Packages
+  url: packages/glia-packages.yml
+- type: SDKs
+  url: packages/glia-packages.yml
+- type: CLI
+  url: cli/glia-cli.yml
+- type: MCPServer
+  url: mcp/glia-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/glia-tool-crosswalk.yml
+- type: Authentication
+  url: authentication/glia-authentication.yml
+- type: Conventions
+  url: conventions/glia-conventions.yml
+- type: Idempotency
+  url: conventions/glia-conventions.yml
+- type: ErrorCatalog
+  url: errors/glia-error-codes.yml
+- type: Lifecycle
+  url: lifecycle/glia-lifecycle.yml
+- type: ChangeLog
+  url: changelog/glia-changelog.yml
+- type: Conformance
+  url: conformance/glia-conformance.yml
+- type: DomainSecurity
+  url: security/glia-domain-security.yml
+- type: VulnerabilityDisclosure
+  url: security/glia-vulnerability-disclosure.yml
+- type: TrustCenter
+  url: security/glia-trust-center.yml
+- type: Components
+  url: components/glia-components.yml
+- type: DataModel
+  url: data-model/glia-data-model.yml
+x-enrichment:
+  date: '2026-08-04'
+  status: enriched
+  artifacts_added: 17
+  pass: local-v1

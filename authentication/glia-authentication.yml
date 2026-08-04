@@ -1,0 +1,101 @@
+generated: '2026-08-04'
+method: probed
+source: >-
+  live probes of api.glia.com/api.glia.eu plus the first-party client in
+  salemove/glia-functions-tools (src/lib/api.js, src/lib/config.js)
+docs: https://docs.glia.com/glia-dev
+docs_access: gated
+summary:
+  types: [http, apiKey]
+  api_key_in: [body]
+  oauth2_flows: []
+  note: >-
+    Glia does not expose OAuth 2.0 or OpenID Connect discovery on any host probed. The model is a
+    two-step exchange: a long-lived API key id/secret pair is posted to a token endpoint, which
+    returns a short-lived bearer token presented on every subsequent request. Derived from a
+    published spec is not possible - Glia publishes no OpenAPI - so this profile is assembled
+    from observed HTTP responses and first-party client source.
+schemes:
+- name: bearerToken
+  type: http
+  scheme: bearer
+  in: header
+  parameter: Authorization
+  format: 'Authorization: Bearer <token>'
+  description: >-
+    The primary scheme for platform/management API calls. The 401 body on GET /operators names
+    the requirement explicitly ("Authorization header must have format 'token_type token'").
+  sources: [probe:https://api.glia.com/sites, src/lib/api.js]
+- name: sessionOrAuthToken
+  type: http
+  scheme: custom
+  in: header
+  parameter: Authorization
+  format: 'Authorization: <SessionId|AuthToken> <token>'
+  description: >-
+    Visitor/engagement endpoints accept two additional token types. GET /engagements returns
+    "Authorization header must have format 'token_type token' where token_type is SessionId or
+    AuthToken", i.e. visitor session identifiers and visitor auth tokens are first-class
+    credential types alongside operator bearer tokens.
+  sources: [probe:https://api.glia.com/engagements]
+- name: apiKeyPair
+  type: apiKey
+  in: body
+  parameters: [api_key_id, api_key_secret]
+  description: >-
+    Site-scoped API key id and secret exchanged for a bearer token. Distributed to integrators as
+    GLIA_KEY_ID / GLIA_KEY_SECRET alongside a GLIA_SITE_ID.
+  sources: [src/lib/config.js]
+- name: operatorApiToken
+  type: apiKey
+  in: body
+  parameters: [api_token]
+  description: >-
+    POST /operator_authentication/tokens with an empty body returns 422
+    {"details":[{"attribute":"api_token","detail":"must be present"}]}, so the endpoint also
+    accepts an api_token attribute directly.
+  sources: [probe:https://api.glia.com/operator_authentication/tokens]
+endpoints:
+- purpose: mint bearer token
+  method: POST
+  url: https://api.glia.com/operator_authentication/tokens
+  request: {api_key_id: string, api_key_secret: string}
+  observed_status: 422
+  observed_body: '{"details":[{"attribute":"api_token","detail":"must be present"}],"error":"validation_error","status":"error"}'
+- purpose: validate current session
+  method: GET
+  url: https://api.glia.com/operator_authentication/sessions/current
+  auth: Bearer
+  source: src/lib/config.js
+deprecations:
+- credential: Site API key
+  superseded_by: service credentials API key authentication
+  announced: '2026-02-17'
+  source: https://github.com/salemove/android-sdk-widgets/releases/tag/3.5.0
+  note: >-
+    Glia introduced "service credentials" to align service-to-service API keys with its access
+    management framework and marked the site API key deprecated in the same release. No sunset
+    date is published.
+token_lifecycle:
+  expiry: true
+  expiry_field: token expiry tracked client-side (GLIA_TOKEN_EXPIRES_AT)
+  refresh: >-
+    The first-party client re-mints a token from the key pair when the current one is within five
+    minutes of expiry; there is no refresh_token grant.
+  revocation_docs: null
+regions:
+- {region: Americas, host: https://api.glia.com}
+- {region: EU, host: https://api.glia.eu}
+- {region: legacy, host: https://api.salemove.com}
+- {region: beta, host: https://api.beta.glia.com}
+not_found:
+  oauth2: 'GET /oauth/token -> 404; no /.well-known/oauth-authorization-server'
+  openid_connect: 'no /.well-known/openid-configuration'
+  jwks: 'GET /.well-known/jwks.json -> 404'
+  mtls: not documented publicly
+x-evidence:
+- {url: 'https://api.glia.com/operators', http_status: 401, fetched: '2026-08-04'}
+- {url: 'https://api.glia.com/sites', http_status: 401, fetched: '2026-08-04'}
+- {url: 'https://api.glia.com/engagements', http_status: 401, fetched: '2026-08-04'}
+- {url: 'https://api.glia.com/operator_authentication/tokens', http_status: 422, fetched: '2026-08-04'}
+- {url: 'https://github.com/salemove/glia-functions-tools/blob/main/src/lib/config.js', http_status: 200, fetched: '2026-08-04'}

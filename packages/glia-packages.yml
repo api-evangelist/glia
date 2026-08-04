@@ -1,0 +1,123 @@
+generated: '2026-08-04'
+method: searched
+source: Maven Central (g:com.glia), CocoaPods trunk API, npm registry, github.com/salemove
+notes: >-
+  Glia ships first-party mobile SDKs to Maven Central under the com.glia group and to CocoaPods
+  under the Glia* pod names. There is no first-party npm package for the browser SDK - the
+  Visitor JS SDK is loaded from a script served by the Glia platform rather than installed from
+  a registry - and no first-party PyPI, NuGet, Go, RubyGems, Packagist or crates.io client.
+packages:
+- language: kotlin
+  platform: android
+  registry: maven-central
+  name: com.glia:android-sdk
+  version: 2.2.4
+  url: https://central.sonatype.com/artifact/com.glia/android-sdk
+  install: implementation("com.glia:android-sdk:2.2.4")
+  official: true
+  description: Glia Android Core SDK.
+- language: kotlin
+  platform: android
+  registry: maven-central
+  name: com.glia:android-widgets
+  version: 3.1.1
+  url: https://central.sonatype.com/artifact/com.glia/android-widgets
+  install: implementation("com.glia:android-widgets:3.1.1")
+  official: true
+  source_code: https://github.com/salemove/android-sdk-widgets
+  description: Prebuilt Android UI components on top of the Glia Android Core SDK.
+- language: kotlin
+  platform: android
+  registry: maven-central
+  name: com.glia:webrtc-android
+  version: m135.7049
+  url: https://central.sonatype.com/artifact/com.glia/webrtc-android
+  official: true
+  description: WebRTC build used by the Glia Android SDKs.
+- language: kotlin
+  platform: multiplatform
+  registry: maven-central
+  name: com.glia:phoenix-channels-client
+  version: 0.1.0
+  url: https://central.sonatype.com/artifact/com.glia/phoenix-channels-client
+  official: true
+  source_code: https://github.com/salemove/phoenix-channels-kmm-bundle
+  description: Kotlin Multiplatform Phoenix Channels client (android/desktop/iOS targets published
+    as sibling artifacts).
+- language: swift
+  platform: ios
+  registry: cocoapods
+  name: GliaWidgets
+  version: 3.5.7
+  url: https://cocoapods.org/pods/GliaWidgets
+  install: pod 'GliaWidgets'
+  official: true
+  source_code: https://github.com/salemove/ios-sdk-widgets
+  description: Prebuilt iOS UI components on top of GliaCoreSDK.
+- language: swift
+  platform: ios
+  registry: cocoapods
+  name: GliaCoreSDK
+  version: 2.6.9
+  url: https://cocoapods.org/pods/GliaCoreSDK
+  install: pod 'GliaCoreSDK'
+  official: true
+  source_code: https://github.com/salemove/ios-bundle
+  description: Glia iOS Core SDK.
+- language: swift
+  platform: ios
+  registry: cocoapods
+  name: GliaCoreDependency
+  version: '2.4.0'
+  url: https://cocoapods.org/pods/GliaCoreDependency
+  official: true
+  description: Shared dependency pod for the Glia iOS SDKs.
+- language: swift
+  platform: ios
+  registry: cocoapods
+  name: SalemoveSDK
+  version: 0.35.9
+  url: https://cocoapods.org/pods/SalemoveSDK
+  official: true
+  deprecated: true
+  description: Legacy SaleMove-branded iOS SDK; superseded by GliaCoreSDK (last release 2023-02).
+- language: javascript
+  platform: ionic
+  registry: github
+  name: widgets_sdk_ionic
+  url: https://github.com/salemove/widgets_sdk_ionic
+  official: true
+  description: Glia Ionic Widgets SDK - distributed from the GitHub repository, not published to
+    npm.
+- language: javascript
+  platform: react-native
+  registry: github
+  name: glia-widgets-reactnative
+  url: https://github.com/salemove/glia-widgets-reactnative
+  official: true
+  description: Glia React Native widgets wrapper - distributed from the GitHub repository, not
+    published to npm.
+- language: javascript
+  platform: node
+  registry: npm
+  name: glia-functions-tools
+  version: 1.2.1
+  url: https://www.npmjs.com/package/glia-functions-tools
+  install: npm install -g glia-functions-tools
+  official: unverified
+  source_code: https://github.com/salemove/glia-functions-tools
+  description: >-
+    Glia Functions CLI and MCP server. The source repository is first-party (github.com/salemove),
+    but the npm publisher is an individual account rather than a Glia-owned scope, so first-party
+    ownership of the registry entry could not be verified. The repository README documents
+    installation from source rather than from npm.
+x-evidence:
+- url: https://search.maven.org/solrsearch/select?q=g:com.glia
+  http_status: 200
+  fetched: '2026-08-04'
+- url: https://trunk.cocoapods.org/api/v1/pods/GliaWidgets
+  http_status: 200
+  fetched: '2026-08-04'
+- url: https://registry.npmjs.org/glia-functions-tools
+  http_status: 200
+  fetched: '2026-08-04'
