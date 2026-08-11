@@ -95,6 +95,11 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: IssueTracker
+  url: https://github.com/salemove/glia-functions-tools/issues
+- type: License
+  name: MIT
+  url: https://github.com/salemove/glia-functions-tools/blob/master/LICENSE
 - type: Website
   url: https://www.glia.com
 - type: DeveloperPortal
