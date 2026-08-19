@@ -12,90 +12,143 @@ server:
   launch: glia-functions mcp
   repository: https://github.com/salemove/glia-functions-tools
   license: MIT
-  scope: >-
-    Glia Functions only - functions, versions, deployments, logs, environment variables, the KV
-    store and scheduled triggers. There is no MCP surface over engagements, queues, operators or
-    the rest of the Glia platform REST API.
+  scope: Glia Functions only - functions, versions, deployments, logs, environment variables, the KV store
+    and scheduled triggers. There is no MCP surface over engagements, queues, operators or the rest of
+    the Glia platform REST API.
   auth:
     style: env
-    variables: [GLIA_KEY_ID, GLIA_KEY_SECRET, GLIA_SITE_ID]
-    note: >-
-      The server mints a platform bearer token from the key pair at
-      POST https://api.glia.com/operator_authentication/tokens; there is no OAuth surface and no
-      remote/HTTP MCP endpoint to introspect anonymously.
+    variables:
+    - GLIA_KEY_ID
+    - GLIA_KEY_SECRET
+    - GLIA_SITE_ID
+    note: The server mints a platform bearer token from the key pair at POST https://api.glia.com/operator_authentication/tokens;
+      there is no OAuth surface and no remote/HTTP MCP endpoint to introspect anonymously.
 tool_count: 23
-tool_count_note: >-
-  23 tools are registered in mcp-server/server.js as read on 2026-08-04. The repository README
-  states "25 specialized tools" and its category breakdown sums to 25, so the published count is
-  ahead of (or behind) the committed server file; the 23 below are the ones actually present in
-  source.
+tool_count_note: 23 tools are registered in mcp-server/server.js as read on 2026-08-04. The repository
+  README states "25 specialized tools" and its category breakdown sums to 25, so the published count is
+  ahead of (or behind) the committed server file; the 23 below are the ones actually present in source.
 tools:
 - name: gf_list_functions
   description: Lists all Glia Functions.
-  params: [verbose]
+  params:
+  - verbose
 - name: gf_get_function
   description: Get function details.
-  params: [functionId]
+  params:
+  - functionId
 - name: gf_list_function_versions
   description: List function versions.
-  params: [functionId]
+  params:
+  - functionId
 - name: gf_deploy_version
   description: Deploy a function version.
-  params: [functionId, versionId]
+  params:
+  - functionId
+  - versionId
 - name: gf_invoke_function
   description: Invoke a function.
-  params: [invocationUri, functionId, payloadJson]
+  params:
+  - invocationUri
+  - functionId
+  - payloadJson
 - name: gf_fetch_logs
   description: Fetch logs.
-  params: [functionId, limit, startTimeIso, endTimeIso, fetchAll]
+  params:
+  - functionId
+  - limit
+  - startTimeIso
+  - endTimeIso
+  - fetchAll
 - name: gf_create_function
   description: Create a function.
-  params: [name, description, warmInstances]
+  params:
+  - name
+  - description
+  - warmInstances
 - name: gf_delete_function
   description: Delete a function.
-  params: [functionId]
+  params:
+  - functionId
 - name: gf_update_function
   description: Update function.
-  params: [functionId, name, description, warmInstances]
+  params:
+  - functionId
+  - name
+  - description
+  - warmInstances
 - name: gf_create_version
   description: Create version. Pass env vars as a JSON string.
-  params: [functionId, code, compatibilityDate, environmentVariablesJson]
+  params:
+  - functionId
+  - code
+  - compatibilityDate
+  - environmentVariablesJson
 - name: gf_get_version_task
   description: Get version task status.
-  params: [functionId, taskId]
+  params:
+  - functionId
+  - taskId
 - name: gf_kv_list
   description: List KV pairs.
-  params: [namespace, prefix, limit]
+  params:
+  - namespace
+  - prefix
+  - limit
 - name: gf_kv_get
   description: Get KV value.
-  params: [namespace, key]
+  params:
+  - namespace
+  - key
 - name: gf_kv_set
   description: Set KV value.
-  params: [namespace, key, value]
+  params:
+  - namespace
+  - key
+  - value
 - name: gf_kv_delete
   description: Delete KV value.
-  params: [namespace, key]
+  params:
+  - namespace
+  - key
 - name: gf_kv_test_and_set
   description: Test and Set KV value.
-  params: [namespace, key, oldValue, newValue]
+  params:
+  - namespace
+  - key
+  - oldValue
+  - newValue
 - name: gf_list_scheduled_triggers
   description: List scheduled triggers.
-  params: [verbose]
+  params:
+  - verbose
 - name: gf_create_scheduled_trigger
   description: Create schedule.
-  params: [name, functionId, schedulePattern, description]
+  params:
+  - name
+  - functionId
+  - schedulePattern
+  - description
 - name: gf_update_scheduled_trigger
   description: Update schedule.
-  params: [triggerId, name, description, schedulePattern, enabled]
+  params:
+  - triggerId
+  - name
+  - description
+  - schedulePattern
+  - enabled
 - name: gf_delete_scheduled_trigger
   description: Delete schedule.
-  params: [triggerId]
+  params:
+  - triggerId
 - name: gf_validate_cron
   description: Validate cron expression.
-  params: [cronExpression]
+  params:
+  - cronExpression
 - name: gf_validate_code
   description: Validate JS code.
-  params: [code, strict]
+  params:
+  - code
+  - strict
 - name: gf_cron_presets
   description: Get cron presets.
   params: []
@@ -103,7 +156,15 @@ x-evidence:
   fetched: '2026-08-04'
   url: https://api.github.com/repos/salemove/glia-functions-tools/contents/mcp-server/server.js
   http_status: 200
-  method_note: >-
-    Tool names, descriptions and parameter names were parsed from the committed server.tool()
-    registrations. The server is stdio-only, so there is no anonymous tools/list endpoint to
-    probe and no live inputSchema to capture.
+  method_note: Tool names, descriptions and parameter names were parsed from the committed server.tool()
+    registrations. The server is stdio-only, so there is no anonymous tools/list endpoint to probe and
+    no live inputSchema to capture.
+deployment:
+  mode: none
+  endpoint: https://api.glia.com/operator_authentication/tokens;
+  verified: probed
+  probe: dead
+  note: the endpoint this manifest claimed did not answer; recorded as none rather than deleted so the
+    claim stays auditable
+  checked: '2026-08-12'
+  source: catalog MCP census
