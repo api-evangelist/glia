@@ -25,6 +25,17 @@ tags:
 - Contact Center
 - Banking
 - Credit Unions
+- Financial-Services
+- Conversational AI
+- Voice
+- Co-Browsing
+- Serverless
+tags_raw:
+- Company
+- Customer Service
+- Contact Center
+- Banking
+- Credit Unions
 - Financial Services
 - Conversational AI
 - Voice
@@ -81,6 +92,10 @@ apis:
   humanURL: https://sdk-docs.glia.com/visitor-js-api/current/
   baseURL: https://api.glia.com
   tags:
+  - JavaScript
+  - SDK
+  - Co-Browsing
+  tags_raw:
   - JavaScript
   - SDK
   - CoBrowsing
