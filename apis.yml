@@ -11,6 +11,19 @@ description: 'Glia (formerly SaleMove) is a digital customer service and applied
   Developer documentation is served from a Fern-hosted portal that requires a Glia account login,
   so no public OpenAPI is published.'
 url: https://raw.githubusercontent.com/api-evangelist/glia/refs/heads/main/apis.yml
+deliveryModel:
+  model: open-core
+  license: MIT
+  open_source: true
+  commercial: true
+  callable_host: false
+  label: Open core · an OSS project plus a commercial hosted product
+  confidence: high
+  source:
+  - license
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://cdn.prod.website-files.com/680f1550811d9719bdbcf21b/680f7b6051475b02b05d75c6_logo.svg
 x-type: company
 x-source: harvest:secondary-market
