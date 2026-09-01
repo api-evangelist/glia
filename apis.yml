@@ -41,7 +41,7 @@ tags:
 - Financial-Services
 - Conversational AI
 - Voice
-- CoBrowsing
+- Co-Browsing
 - Serverless
 tags_raw:
 - Company
@@ -107,7 +107,7 @@ apis:
   tags:
   - JavaScript
   - SDK
-  - CoBrowsing
+  - Co-Browsing
   tags_raw:
   - JavaScript
   - SDK
