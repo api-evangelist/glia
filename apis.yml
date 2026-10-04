@@ -51,7 +51,7 @@ tags:
 - Contact Center
 - Banking
 - Credit Union
-- Financial-Services
+- Financial Services
 - Conversational AI
 - Voice
 - Co-Browsing
@@ -67,6 +67,7 @@ tags_raw:
 - Voice
 - CoBrowsing
 - Serverless
+- Financial-Services
 apis:
 - aid: glia:glia-rest-api
   name: Glia REST API
