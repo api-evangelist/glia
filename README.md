@@ -64,26 +64,107 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Glia (formerly SaleMove) is a digital customer service and applied-AI platform built for banks,
-credit unions and insurers, unifying chat, voice, video, messaging and CoBrowsing under what the
-company calls ChannelLess architecture.
+Glia (formerly SaleMove) is a digital customer service and applied-AI platform built for banks, credit unions and insurers, unifying chat, voice, video, messaging and CoBrowsing under what the company calls ChannelLess architecture. Its AI layer is packaged as Glia Banker (customer-facing AI agent), Glia CoPilot (real-time agent assist) and Glia Analyst (manager/QA AI), alongside Glia Voice. The developer surface is a REST API at api.glia.com with regional US/EU hosts, a public Visitor JS SDK for embedding engagements in web properties, native iOS/Android/Ionic widget SDKs published to CocoaPods and Maven Central, and Glia Functions - a workerd-based serverless JavaScript runtime with a first-party CLI and MCP server. Developer documentation is served from a Fern-hosted portal that requires a Glia account login, so no public OpenAPI is published.
 
-The developer surface is a REST API at `api.glia.com` with regional US/EU hosts, a public Visitor
-JS SDK for embedding engagements in web properties, native iOS/Android/Ionic widget SDKs published
-to CocoaPods and Maven Central, and Glia Functions — a workerd-based serverless JavaScript runtime
-with a first-party CLI and MCP server.
+**Areas:** Company · Customer Service · Contact Center · Banking · Credit Union · Financial Services · Conversational AI · Voice · Co-Browsing · Serverless
 
-**Note on the contract.** Glia publishes no public OpenAPI. Its developer reference is served from
-a Fern-hosted portal that redirects to a Glia account login, and `/openapi.json` on that host
-returns `401`. The artifacts in this repository are therefore assembled from what *is* public:
-observed HTTP responses from `api.glia.com`, Glia's own open-source API client and CLI, the public
-Visitor JS SDK reference, published package registries, and the company's security, status and
-compliance pages.
+## Glia on APIs.io
 
-- Website — https://www.glia.com
-- Developer portal (login required) — https://docs.glia.com/glia-dev
-- Visitor JS SDK reference — https://sdk-docs.glia.com/visitor-js-api/current/
-- GitHub — https://github.com/salemove
-- Status — https://status.glia.com
-- Security & compliance — https://www.glia.com/security
-- Bug bounty — https://www.glia.com/security-bounty
+Everything profiled for Glia is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/glia/](https://apis.io/providers/glia/)** — or go straight to one of the APIs or properties below.
+
+### APIs (3)
+
+- [Glia REST API](https://apis.io/apis/glia/glia-rest-api/) — The Glia platform REST API. Serves operators, sites, engagements, queues and reporting resources over api.glia.com (US) and api.glia.eu (EU). Authentication…
+- [Glia Functions API](https://apis.io/apis/glia/glia-functions-api/) — Glia Functions is a serverless JavaScript runtime (workerd) inside the Glia platform, with REST endpoints for functions, versions, deployments, logs,…
+- [Glia Visitor JS SDK](https://apis.io/apis/glia/glia-visitor-js-sdk/) — The public browser SDK for embedding Glia engagements into a web property - queueing for engagement, chat, media upgrades, screen sharing, CoBrowsing,…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [glia-functions-cli](https://apis.io/servers/glia/glia-functions-cli/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Glia Authentication](https://apis.io/security/glia/glia-authentication/)
+- [Glia Domain Security](https://apis.io/security/glia/glia-domain-security/)
+- [Glia Trust Center](https://apis.io/security/glia/glia-trust-center/)
+- [Glia Vulnerability Disclosure](https://apis.io/security/glia/glia-vulnerability-disclosure/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.glia.com)
+- [Documentation](https://docs.glia.com/)
+- [API reference](https://sdk-docs.glia.com/visitor-js-api/current/)
+- [Pricing](https://www.glia.com/pricing)
+- [Support](https://www.glia.com/services-support)
+- [Blog](https://www.glia.com/blog)
+- [Security](https://www.glia.com/security-bounty)
+- [Compliance](https://www.glia.com/security)
+- [Terms of service](https://www.glia.com/security-compliance/terms-of-service)
+- [Privacy policy](https://www.glia.com/security-compliance/privacy-policy)
+- [GitHub](https://github.com/salemove)
+- [Status](https://status.glia.com)
+
+## API Evangelist rating
+
+**Kin Score 39.7** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 78.6 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 44.7 |
+| Developer ergonomics | 59.5 |
+| Access clarity | 53.9 |
+
+**Agent readiness 8.6** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | documented (partial credit) |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 28.3** — Banking & Open Finance
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/glia/](https://apis.io/providers/glia/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Glia: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/glia/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
